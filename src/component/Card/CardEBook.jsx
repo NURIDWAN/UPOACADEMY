@@ -1,31 +1,28 @@
-export default function CardEBook() {
+import React from 'react';
+
+export default function CardEBook({ title, description, imageUrl, price, author }) {
     return (
-        <>
-            <article className="relative overflow-hidden transition rounded-lg shadow-sm hover:shadow-lg">
-                <img
-                    alt=""
-                    src="https://images.unsplash.com/photo-1661956602116-aa6865609028?ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=764&q=80"
-                    className="absolute inset-0 object-cover w-full h-full"
-                />
+        <article className="relative overflow-hidden transition bg-gray-800 rounded-lg shadow-sm hover:shadow-lg h-[400px] group">
+            <img
+                alt={title}
+                src={imageUrl}
+                className="absolute inset-0 object-cover w-full h-full"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/70 to-transparent"></div>
 
-                <div className="relative pt-32 bg-gradient-to-t from-gray-900/50 to-gray-900/25 sm:pt-48 lg:pt-64">
-                    <div className="p-4 sm:p-6">
-                        <time dateTime="2022-10-10" className="block text-xs text-white/90"> 10th Oct 2022 </time>
+            <div className="absolute inset-x-0 bottom-0 p-6 transition-all duration-300 ease-in-out transform translate-y-2 group-hover:translate-y-0">
+                <h3 className="mb-2 text-xl font-bold text-white">{title}</h3>
 
-                        <a href="#">
-                            <h3 className="mt-0.5 text-lg text-white">How to position your furniture for positivity</h3>
-                        </a>
+                <p className="mb-4 text-sm text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300 line-clamp-3">
+                    {description}
+                </p>
 
-                        <p className="mt-2 line-clamp-3 text-sm/relaxed text-white/95">
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Recusandae dolores, possimus
-                            pariatur animi temporibus nesciunt praesentium dolore sed nulla ipsum eveniet corporis
-                            quidem, mollitia itaque minus soluta, voluptates neque explicabo tempora nisi culpa eius
-                            atque dignissimos. Molestias explicabo corporis voluptatem?
-                        </p>
-                    </div>
+                <div className="flex items-center justify-between">
+                    <span className="text-lg font-bold text-white">{price}</span>
+                    <span className="text-xs text-gray-400">By {author}</span>
                 </div>
-            </article>
-        </>
-    )
+            </div>
+        </article>
+    );
 }
 
