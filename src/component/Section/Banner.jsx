@@ -20,54 +20,64 @@ const BackgroundElements = React.memo(() => (
   </>
 ));
 
-const BannerContent = React.memo(() => (
+const BannerContent = React.memo(({
+  title = "Default Title",
+  description = "Default description",
+  primaryButtonText = "Get Started",
+  primaryButtonLink = "#",
+  secondaryButtonText = "Learn More",
+  secondaryButtonLink = "#",
+  circularText = "REACT*BITS*COMPONENTS*",
+  centerText = "React Bits"
+}) => (
   <div className="w-full max-w-screen-xl mx-auto md:grid md:grid-cols-2 md:items-center md:gap-4">
     <div className="text-left max-w-prose">
       <h1 className="text-4xl font-bold text-white sm:text-5xl">
-        Understand user flow and
-        <strong className="text-indigo-400"> increase </strong>
-        conversions
+        {title.split(' ').map((word, index) => 
+          word.toLowerCase() === 'increase' ? 
+            <strong key={index} className="text-indigo-400">{word} </strong> : 
+            `${word} `
+        )}
       </h1>
       <p className="mt-4 text-base text-gray-100 sm:text-lg">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque, nisi. Natus, provident
-        accusamus impedit minima harum corporis iusto.
+        {description}
       </p>
       <div className="flex gap-4 mt-6">
         <a
           className="inline-block px-5 py-3 font-medium text-white transition-colors bg-blue-600 border border-indigo-600 rounded shadow-sm hover:bg-indigo-700"
-          href="#"
+          href={primaryButtonLink}
         >
-          Get Started
+          {primaryButtonText}
         </a>
         <a
           className="inline-block px-5 py-3 font-medium text-white transition-colors border border-white rounded shadow-sm hover:bg-gray-700 hover:text-white"
-          href="#"
+          href={secondaryButtonLink}
         >
-          Learn More
+          {secondaryButtonText}
         </a>
       </div>
     </div>
     <div className="relative items-center justify-center hidden mt-8 md:flex md:mt-0">
       <CircularText
-        text="REACT*BITS*COMPONENTS*"
+        text={circularText}
         onHover="speedUp"
         spinDuration={20}
         className="w-64 h-64 text-blue-400"
       />
       <div className="absolute inset-0 flex items-center justify-center">
-        <span className="text-2xl font-bold text-white">React Bits</span>
+        <span className="text-2xl font-bold text-white">{centerText}</span>
       </div>
     </div>
   </div>
 ));
 
-function Banner() {
+function Banner(props) {
   return (
     <div className="relative w-full min-h-screen overflow-hidden bg-gray-900">
       <BackgroundElements />
       <div className="relative z-10 flex items-center justify-center min-h-screen">
         <div className="container px-4 py-8 mx-auto">
-          <BannerContent />
+          <BannerContent {...props} />
         </div>
       </div>
     </div>

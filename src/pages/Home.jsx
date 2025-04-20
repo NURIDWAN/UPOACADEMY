@@ -54,6 +54,7 @@ const dummyArticles = [
 
 const dummyEBooks = [
   {
+    id: 1,
     title: "Mastering React Hooks",
     description: "A comprehensive guide to React Hooks and functional components.",
     imageUrl: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
@@ -61,6 +62,7 @@ const dummyEBooks = [
     author: "John Doe"
   },
   {
+    id: 2,
     title: "Advanced JavaScript Patterns",
     description: "Explore advanced design patterns and techniques in JavaScript.",
     imageUrl: "https://images.unsplash.com/photo-1579468118864-1b9ea3c0db4a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
@@ -68,6 +70,7 @@ const dummyEBooks = [
     author: "Jane Smith"
   },
   {
+    id: 3,
     title: "CSS Grid and Flexbox Mastery",
     description: "Master modern CSS layout techniques with Grid and Flexbox.",
     imageUrl: "https://images.unsplash.com/photo-1507721999472-8ed4421c4af2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
@@ -75,6 +78,7 @@ const dummyEBooks = [
     author: "Alice Johnson"
   },
   {
+    id: 4,
     title: "Node.js Microservices",
     description: "Build scalable microservices architecture with Node.js.",
     imageUrl: "https://images.unsplash.com/photo-1627398242454-45a1465c2479?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80",
