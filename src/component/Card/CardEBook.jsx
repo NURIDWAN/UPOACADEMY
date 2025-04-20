@@ -26,3 +26,26 @@ export default function CardEBook({ title, description, imageUrl, price, author 
     );
 }
 
+const book = {
+    id: 1,
+    title: "JavaScript ES6 Guide",
+    chapters: [
+        {
+            title: "Introduction to ES6",
+            sections: [
+                {
+                    title: "What is ES6?",
+                    content: [
+                        { type: 'text', content: "ES6, also known as ECMAScript 2015, is a major update to JavaScript that introduces many new features." },
+                        { type: 'image', src: 'https://example.com/es6-logo.png', alt: 'ES6 Logo', caption: 'ECMAScript 2015 Logo' },
+                        { type: 'code', language: 'javascript', content: 'const greeting = "Hello, ES6!";' },
+                        { type: 'note', content: "ES6 is widely supported in modern browsers and can be used with transpilers for older environments." }
+                    ]
+                },
+                // ... more sections ...
+            ]
+        },
+        // ... more chapters ...
+    ]
+};
+
