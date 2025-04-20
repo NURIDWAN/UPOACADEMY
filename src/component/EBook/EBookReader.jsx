@@ -1,28 +1,7 @@
-const book = {
-    id: 1,
-    title: "JavaScript ES6 Guide",
-    chapters: [
-        {
-            title: "Introduction to ES6",
-            sections: [
-                {
-                    title: "What is ES6?",
-                    content: [
-                        { type: 'text', content: "ES6, also known as ECMAScript 2015, is a major update to JavaScript that introduces many new features." },
-                        { type: 'image', src: 'https://example.com/es6-logo.png', alt: 'ES6 Logo', caption: 'ECMAScript 2015 Logo' },
-                        { type: 'code', language: 'javascript', content: 'const greeting = "Hello, ES6!";' },
-                        { type: 'note', content: "ES6 is widely supported in modern browsers and can be used with transpilers for older environments." }
-                    ]
-                },
-                // ... more sections ...
-            ]
-        },
-        // ... more chapters ...
-    ]
-};
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { FaBook, FaChevronRight, FaChevronDown, FaBookOpen, FaInfoCircle } from 'react-icons/fa';
+import { FaBook, FaChevronRight, FaChevronDown, FaBookOpen, FaInfoCircle, FaTimes } from 'react-icons/fa';
 import { IoMdMenu } from 'react-icons/io';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { atomOneDark } from 'react-syntax-highlighter/dist/esm/styles/hljs';
@@ -31,7 +10,36 @@ const EBookReader = ({ book }) => {
     const [currentChapterIndex, setCurrentChapterIndex] = useState(0);
     const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
     const [currentSubsectionIndex, setCurrentSubsectionIndex] = useState(null);
-    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+    const [readingProgress, setReadingProgress] = useState(0);
+
+    useEffect(() => {
+        // Hitung total subbab dan subbab yang telah dibaca
+        let totalSubsections = 0;
+        let readSubsections = 0;
+
+        book.chapters.forEach((chapter, chapterIdx) => {
+            chapter.sections.forEach((section, sectionIdx) => {
+                if (section.subsections && section.subsections.length > 0) {
+                    totalSubsections += section.subsections.length;
+                    if (chapterIdx < currentChapterIndex || (chapterIdx === currentChapterIndex && sectionIdx < currentSectionIndex)) {
+                        readSubsections += section.subsections.length;
+                    } else if (chapterIdx === currentChapterIndex && sectionIdx === currentSectionIndex) {
+                        readSubsections += currentSubsectionIndex !== null ? currentSubsectionIndex + 1 : 0;
+                    }
+                } else {
+                    totalSubsections += 1;
+                    if (chapterIdx < currentChapterIndex || (chapterIdx === currentChapterIndex && sectionIdx <= currentSectionIndex)) {
+                        readSubsections += 1;
+                    }
+                }
+            });
+        });
+
+        const progress = (readSubsections / totalSubsections) * 100;
+        setReadingProgress(Math.round(progress));
+    }, [currentChapterIndex, currentSectionIndex, currentSubsectionIndex, book.chapters]);
 
     if (!book || !book.chapters || book.chapters.length === 0) {
         return <div className="flex items-center justify-center h-screen text-xl text-red-400">eBook not found or has no content.</div>;
@@ -39,14 +47,17 @@ const EBookReader = ({ book }) => {
 
     const currentChapter = book.chapters[currentChapterIndex];
     const currentSection = currentChapter.sections[currentSectionIndex];
-    const currentContent = currentSubsectionIndex !== null 
-        ? currentSection.subsections[currentSubsectionIndex].content 
+    const currentContent = currentSubsectionIndex !== null
+        ? currentSection.subsections[currentSubsectionIndex].content
         : currentSection.content;
 
     const navigateTo = (chapterIndex, sectionIndex, subsectionIndex = null) => {
         setCurrentChapterIndex(chapterIndex);
         setCurrentSectionIndex(sectionIndex);
         setCurrentSubsectionIndex(subsectionIndex);
+        if (window.innerWidth < 768) {
+            setIsSidebarOpen(false);
+        }
     };
 
     const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
@@ -68,9 +79,20 @@ const EBookReader = ({ book }) => {
                     return <p key={index} className="mb-4 text-gray-300">{item.content}</p>;
                 case 'image':
                     return (
-                        <div key={index} className="mb-4">
-                            <img src={item.src} alt={item.alt} className="max-w-full h-auto" />
-                            {item.caption && <p className="text-sm text-gray-400 mt-2">{item.caption}</p>}
+                        <div key={index} className="mb-6">
+                            <div className="flex justify-center ">
+                                <img 
+                                    src={item.src} 
+                                    alt={item.alt} 
+                                    className="h-auto max-w-full rounded-lg shadow-lg" 
+                                    style={{ maxHeight: '38vh' }} // Batasi tinggi maksimum gambar
+                                />
+                            </div>
+                            {item.caption && (
+                                <p className="mt-2 text-sm text-center text-gray-400">
+                                    {item.caption}
+                                </p>
+                            )}
                         </div>
                     );
                 case 'code':
@@ -83,8 +105,8 @@ const EBookReader = ({ book }) => {
                     );
                 case 'note':
                     return (
-                        <div key={index} className="bg-blue-900 border-l-4 border-blue-500 text-blue-200 p-4 mb-4">
-                            <p className="font-bold flex items-center"><FaInfoCircle className="mr-2" /> Note</p>
+                        <div key={index} className="p-4 mb-4 text-blue-200 bg-blue-900 border-l-4 border-blue-500">
+                            <p className="flex items-center font-bold"><FaInfoCircle className="mr-2" /> Note</p>
                             <p>{item.content}</p>
                         </div>
                     );
@@ -95,23 +117,46 @@ const EBookReader = ({ book }) => {
         });
     };
 
+    const ReadingProgress = () => (
+        <div className="absolute bottom-0 left-0 right-0 p-4 bg-gray-700">
+            <div className="flex items-center justify-between mb-2 text-sm text-gray-300">
+                <span>Reading Progress</span>
+                <span>{readingProgress}%</span>
+            </div>
+            <div className="w-full bg-gray-600 rounded-full h-2.5">
+                <div
+                    className="bg-blue-400 h-2.5 rounded-full"
+                    style={{ width: `${readingProgress}%` }}
+                ></div>
+            </div>
+        </div>
+    );
+
     return (
-        <div className="flex h-screen bg-gray-900">
-            {/* Sidebar toggle button for mobile */}
-            <button 
-                className="fixed z-20 p-2 text-white bg-blue-600 rounded-full shadow-lg md:hidden top-4 left-4"
+        <div className="flex h-screen bg-gray-900 ">
+            {/* Overlay untuk mobile ketika sidebar terbuka */}
+            {isSidebarOpen && (
+                <div 
+                    className="fixed inset-0 z-20 bg-black bg-opacity-50 md:hidden"
+                    onClick={toggleSidebar}
+                ></div>
+            )}
+
+            {/* Sidebar toggle button untuk mobile */}
+            <button
+                className="fixed z-30 p-2 text-white bg-blue-600 rounded-full shadow-lg md:hidden top-16 left-4" // Ubah top-4 menjadi top-16
                 onClick={toggleSidebar}
             >
-                <IoMdMenu size={24} />
+                {isSidebarOpen ? <FaTimes size={24} /> : <IoMdMenu size={24} />}
             </button>
 
             {/* Left side: Table of Contents */}
-            <div className={`w-64 bg-gray-800 border-r border-gray-700 overflow-y-auto transition-all duration-300 ease-in-out ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 fixed md:static h-full z-10`}>
+            <div className={`w-64 bg-gray-800 border-r border-gray-700 overflow-y-auto transition-all duration-300 ease-in-out ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} fixed md:translate-x-0 md:static h-full z-30 flex flex-col`}>
                 <div className="sticky top-0 z-10 flex items-center justify-between p-4 bg-gray-800 border-b border-gray-700">
                     <h3 className="text-lg font-semibold text-white">Table of Contents</h3>
                     <FaBook className="text-blue-400" size={20} />
                 </div>
-                <ul className="p-4">
+                <ul className="flex-grow p-4 overflow-y-auto">
                     {book.chapters.map((chapter, chapterIndex) => (
                         <li key={chapterIndex} className="mb-4">
                             <button
@@ -153,11 +198,12 @@ const EBookReader = ({ book }) => {
                         </li>
                     ))}
                 </ul>
+                <ReadingProgress />
             </div>
 
             {/* Right side: eBook content */}
-            <div className="flex-1 p-4 overflow-y-auto bg-gray-900 md:p-8 lg:p-12">
-                <div className="max-w-3xl mx-auto">
+            <div className={`flex-1 p-4 pt-16 bg-gray-900 md:p-8 md:pt-20 transition-all duration-300 ease-in-out overflow-hidden flex flex-col`}>
+                <div className="max-w-3xl mx-auto w-full flex-shrink-0">
                     <h1 className="flex items-center mb-6 text-3xl font-bold text-white">
                         <FaBookOpen className="mr-3 text-blue-400" size={32} />
                         {book.title}
@@ -167,8 +213,12 @@ const EBookReader = ({ book }) => {
                     {currentSubsectionIndex !== null && (
                         <h4 className="mb-2 text-lg font-semibold text-gray-400">{currentSection.subsections[currentSubsectionIndex].title}</h4>
                     )}
-                    <div className="mb-8 prose prose-sm sm:prose lg:prose-lg xl:prose-xl prose-invert">
-                        {renderContent(currentContent)}
+                </div>
+                <div className="overflow-y-auto flex-grow">
+                    <div className="max-w-3xl mx-auto">
+                        <div className="mb-8 prose-sm prose sm:prose lg:prose-lg xl:prose-xl prose-invert">
+                            {renderContent(currentContent)}
+                        </div>
                     </div>
                 </div>
             </div>
