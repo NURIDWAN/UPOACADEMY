@@ -23,7 +23,7 @@ function Navbar({ navbarItems, logoSrc }) {
                             <span className="sr-only">Home</span>
                             <img src={logoSrc} alt="Logo" className="h-8" />
                         </a>
-                        
+
                     </div>
 
                     <div className="md:flex md:items-center md:gap-12">
@@ -49,7 +49,7 @@ function Navbar({ navbarItems, logoSrc }) {
                                 </a>
                             </div>
 
-                            
+
 
                             <div className="block md:hidden">
                                 <button
@@ -83,31 +83,12 @@ function Navbar({ navbarItems, logoSrc }) {
                         <ul className="space-y-2">
                             {navbarItems.map((item, index) => (
                                 <li key={index}>
-                                    <a
-                                        href={item.href}
-                                        className="block py-2 text-gray-300 hover:text-white"
-                                        onClick={closeMenu}
-                                    >
+                                    <Link className="text-gray-300 transition hover:text-white" to={item.href}>
                                         {item.label}
-                                    </a>
+                                    </Link>
                                 </li>
                             ))}
-                            <li>
-                                <a
-                                    className="block w-full rounded-md bg-blue-600 px-5 py-2.5 text-sm font-medium text-white shadow hover:bg-blue-500"
-                                    href="#"
-                                >
-                                    Login
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    className="block w-full rounded-md bg-gray-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-gray-600"
-                                    href="#"
-                                >
-                                    Register
-                                </a>
-                            </li>
+
                         </ul>
                     </nav>
                 </div>
