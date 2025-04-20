@@ -1,0 +1,75 @@
+import React from "react";
+import LetterGlitch from "../../blocks/Backgrounds/LetterGlitch/LetterGlitch";
+import CircularText from "../../blocks/TextAnimations/CircularText/CircularText"
+
+const BackgroundElements = React.memo(() => (
+  <>
+    <div className="absolute inset-0">
+      <LetterGlitch
+        glitchSpeed={50}
+        centerVignette={true}
+        outerVignette={true}
+        smooth={true}
+        className="w-full h-full"
+      />
+    </div>
+    <div className="absolute inset-0 bg-gradient-radial from-transparent via-gray-900/70 to-gray-900 opacity-80"></div>
+    <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-gray-900 via-gray-900/50 to-transparent"></div>
+  </>
+));
+
+const BannerContent = React.memo(() => (
+  <div className="w-full max-w-screen-xl mx-auto md:grid md:grid-cols-2 md:items-center md:gap-4">
+    <div className="text-left max-w-prose">
+      <h1 className="text-4xl font-bold text-gray-200 sm:text-5xl">
+        Understand user flow and
+        <strong className="text-indigo-600"> increase </strong>
+        conversions
+      </h1>
+      <p className="mt-4 text-base text-gray-200 sm:text-lg">
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque, nisi. Natus, provident
+        accusamus impedit minima harum corporis iusto.
+      </p>
+      <div className="flex gap-4 mt-6">
+        <a
+          className="inline-block px-5 py-3 font-medium text-white transition-colors bg-blue-600 border border-indigo-600 rounded shadow-sm hover:bg-indigo-700"
+          href="#"
+        >
+          Get Started
+        </a>
+        <a
+          className="inline-block px-5 py-3 font-medium text-gray-200 transition-colors border border-gray-200 rounded shadow-sm hover:bg-gray-700 hover:text-white"
+          href="#"
+        >
+          Learn More
+        </a>
+      </div>
+    </div>
+    <div className="relative items-center justify-center hidden mt-8 md:flex md:mt-0">
+      <CircularText
+        text="REACT*BITS*COMPONENTS*"
+        onHover="speedUp"
+        spinDuration={20}
+        className="w-64 h-64 text-blue-400"
+      />
+      <div className="absolute inset-0 flex items-center justify-center">
+        <span className="text-2xl font-bold text-gray-200">React Bits</span>
+      </div>
+    </div>
+  </div>
+));
+
+function Banner() {
+  return (
+    <div className="relative w-full min-h-screen overflow-hidden bg-gray-900">
+      <BackgroundElements />
+      <div className="relative z-10 flex items-center justify-center min-h-screen">
+        <div className="container px-4 py-8 mx-auto">
+          <BannerContent />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default React.memo(Banner);
