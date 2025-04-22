@@ -11,6 +11,7 @@ function App() {
   const menuItems = [
     { label: 'Home', href: '/' },
     { label: 'About', href: '/about' },
+    { label: 'Articles', href: '/articles' },
     // ... other menu items
   ];
 

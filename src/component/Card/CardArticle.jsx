@@ -1,38 +1,57 @@
 import React from 'react';
 
-const CardArticle = React.memo(({ title, description, imageUrl, date, readTime }) => {
+const CardArticle = React.memo(({ title, description, imageUrl, date, readTime, author, category }) => {
   return (
-    <article className="flex flex-col overflow-hidden rounded-lg shadow transition hover:shadow-lg h-full bg-gray-800 border border-gray-700">
-      <div className="h-48 overflow-hidden">
-        <img
-          alt={title}
-          src={imageUrl}
-          className="w-full h-full object-cover"
-        />
+    <article className="flex flex-col overflow-hidden text-gray-100 bg-gray-800 rounded-lg shadow-lg">
+      <div className="flex-shrink-0">
+        <img className="object-cover w-full h-48" src={imageUrl} alt={title} />
       </div>
-
-      <div className="flex flex-col flex-grow p-4 sm:p-6">
-        <div className="flex-grow">
-          <time dateTime={date} className="block text-xs text-gray-400 mb-2">
-            {date}
-          </time>
-
-          <h3 className="text-lg font-semibold text-gray-100 mb-2">
-            {title}
-          </h3>
-
-          <p className="text-sm/relaxed text-gray-300 line-clamp-3">
-            {description}
-          </p>
+      <div className="flex flex-col justify-between flex-1 p-6">
+        <div className="flex-1">
+          {category && (
+            <p className="text-sm font-medium text-blue-400">
+              <span className="hover:underline">{category}</span>
+            </p>
+          )}
+          <div className="block mt-2">
+            <p className="text-xl font-semibold text-white">{title}</p>
+            <p className="mt-3 text-base text-gray-400">{description}</p>
+          </div>
         </div>
-
-        <div className="mt-4 flex items-center justify-between">
-          <span className="text-xs text-gray-400">{readTime}</span>
-          <a href="#" className="text-blue-400 hover:text-blue-300 text-sm">Read More</a>
+        <div className="flex items-center mt-6">
+          {author && (
+            <div className="flex items-center">
+              <div className="flex-shrink-0">
+                {author.image ? (
+                  <img className="w-10 h-10 rounded-full" src={author.image} alt={author.name} />
+                ) : (
+                  <div className="flex items-center justify-center w-10 h-10 bg-gray-600 rounded-full">
+                    <span className="text-xl text-white">{author.name.charAt(0)}</span>
+                  </div>
+                )}
+              </div>
+              <div className="ml-3">
+                <p className="text-sm font-medium text-gray-300">
+                  <span className="hover:underline">{author.name}</span>
+                </p>
+                <div className="flex space-x-1 text-sm text-gray-400">
+                  {date && <time dateTime={date}>{date}</time>}
+                  {readTime && (
+                    <>
+                      <span aria-hidden="true">&middot;</span>
+                      <span>{readTime}</span>
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </article>
   );
 });
+
+
 
 export default CardArticle;

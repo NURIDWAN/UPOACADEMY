@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import CardArticle from "../Card/CardArticle";
 import SidebarCategory from "../Sidebar/SidebarCategory";
 
@@ -9,14 +10,23 @@ const ArticleHeader = React.memo(() => (
       Kumpulan rangkaian tutorial berdasarkan teknologi tertentu untuk mempermudah
       kamu belajar koding dengan cepat dan terstruktur.
     </p>
-    <a href="#" className="text-blue-400 hover:text-blue-300">Lihat Semua →</a>
+    <Link to="/articles" className="text-blue-400 hover:text-blue-300">Lihat Semua →</Link>
   </div>
 ));
 
 const ArticleGrid = React.memo(({ articles }) => (
-  <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+  <div className="grid grid-cols-1 gap-8 mt-8 md:grid-cols-2 lg:grid-cols-3">
     {articles.map((article, index) => (
-      <CardArticle key={index} {...article} />
+      <CardArticle
+        key={index}
+        title={article.title}
+        description={article.description}
+        imageUrl={article.imageUrl}
+        date={article.date}
+        readTime={article.readTime}
+        author={article.author}
+        category={article.category}
+      />
     ))}
   </div>
 ));

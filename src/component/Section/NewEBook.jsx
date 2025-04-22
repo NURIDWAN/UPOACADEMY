@@ -2,17 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import CardEBook from "../Card/CardEBook";
 
-const dummyEBooks = [
-  {
-    id: 1,
-    title: "Mastering React Hooks",
-    description: "A comprehensive guide to React Hooks and functional components.",
-    imageUrl: "https://example.com/react-hooks.jpg",
-    price: "$19.99",
-    author: "John Doe"
-  },
-  // ... other books
-];
+
 
 export default function NewEBook({ Title, Description, seeAllSrc, EBook }) {
     return (
@@ -30,7 +20,7 @@ export default function NewEBook({ Title, Description, seeAllSrc, EBook }) {
             <div className="grid grid-cols-1 gap-8 px-4 py-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                 {EBook && EBook.length > 0 ? (
                     EBook.map((book, index) => (
-                        <Link key={index} to={`/ebook/${book.id}`} className="block transition duration-300 transform hover:scale-105">
+                        <Link key={index} to={`/ebook-detail/${book.id}`} className="block transition duration-300 transform hover:scale-105">
                             <CardEBook
                                 title={book.title}
                                 description={book.description}
@@ -41,7 +31,7 @@ export default function NewEBook({ Title, Description, seeAllSrc, EBook }) {
                         </Link>
                     ))
                 ) : (
-                    <div className="col-span-full text-center text-gray-400">
+                    <div className="text-center text-gray-400 col-span-full">
                         No eBooks available at the moment.
                     </div>
                 )}

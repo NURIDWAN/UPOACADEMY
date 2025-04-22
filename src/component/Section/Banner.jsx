@@ -40,7 +40,7 @@ const BannerContent = React.memo(({
         )}
       </h1>
       <p className="mt-4 text-base text-gray-100 sm:text-lg">
-        {description}
+        {description} 
       </p>
       <div className="flex gap-4 mt-6">
         <a
